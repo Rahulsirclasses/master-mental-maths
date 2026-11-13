@@ -1,0 +1,35 @@
+﻿{
+    "description":  "Lightning fast speed-math, multiplication tricks, Vedic math, and CAT calculation drills",
+    "short_name":  "Mental Math",
+    "background_color":  "#000000",
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "/icons/icon-192x192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "/icons/icon-512x512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "/icons/maskable-icon-512x512.png"
+                  }
+              ],
+    "theme_color":  "#0f172a",
+    "display":  "standalone",
+    "name":  "Rahul Sir Classes - Mental Math Mastery",
+    "categories":  [
+                       "education",
+                       "productivity"
+                   ],
+    "scope":  "/",
+    "start_url":  "/",
+    "orientation":  "portrait-primary"
+}

@@ -1,3 +1,4 @@
+﻿import { PWAInstallPrompt } from "@/components/pwa-install";
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
@@ -8,7 +9,13 @@ import { SessionProvider } from "@/components/session-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Speed Maths Mastery – Powered by Rahul Sir Classes",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Mental Math",
+  },
+  title: "Speed Maths Mastery â€“ Powered by Rahul Sir Classes",
   description: "Train students in fast speed calculation, percentage handling, and real-world math agility",
   icons: {
     icon: [
@@ -46,7 +53,9 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </SessionProvider>
+        <PWAInstallPrompt appName="Mental Math" themeGradient="from-emerald-500 to-teal-600" />
       </body>
     </html>
   )
 }
+
