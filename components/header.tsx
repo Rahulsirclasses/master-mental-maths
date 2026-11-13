@@ -1,12 +1,13 @@
-"use client"
+﻿"use client"
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Menu, X, LogIn, LogOut, User } from "lucide-react"
+import { Menu, X, LogIn, LogOut, User, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { usePathname } from "next/navigation"
 import { FaviconLogo } from "@/components/favicon-logo"
 import { useSession, signOut } from "next-auth/react"
+import { triggerPWAInstall } from "@/components/pwa-install"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,6 +84,17 @@ export function Header() {
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-sky-500 to-purple-500 transition-all duration-300 group-hover:w-full"></span>
             </Link>
           ))}
+                    {/* PWA Install Button */}
+          <button
+            onClick={triggerPWAInstall}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-400/40 text-emerald-300 hover:text-white text-xs font-bold transition"
+            title="Install App"
+          >
+            <Download className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Install App</span>
+            <span className="text-[10px] bg-emerald-500/30 px-1 rounded">APK</span>
+          </button>
+
           {session?.user?.role === 'admin' && (
             <Link
               href="/dashboard/admin"
@@ -128,7 +140,7 @@ export function Header() {
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard/admin" className="cursor-pointer hover:bg-gray-800 focus:bg-gray-800">
                         <div className="flex items-center">
-                          <span className="mr-2 h-4 w-4 text-sky-400 flex items-center justify-center font-bold">🛡️</span>
+                          <span className="mr-2 h-4 w-4 text-sky-400 flex items-center justify-center font-bold">ðŸ›¡ï¸</span>
                           <span className="text-sky-400">User Management</span>
                         </div>
                       </Link>
@@ -136,7 +148,7 @@ export function Header() {
                     <DropdownMenuItem asChild>
                       <Link href="/admin" className="cursor-pointer hover:bg-gray-800 focus:bg-gray-800">
                         <div className="flex items-center">
-                          <span className="mr-2 h-4 w-4 text-purple-400 flex items-center justify-center font-bold">⚙️</span>
+                          <span className="mr-2 h-4 w-4 text-purple-400 flex items-center justify-center font-bold">âš™ï¸</span>
                           <span className="text-purple-400">Content Panel</span>
                         </div>
                       </Link>
@@ -201,7 +213,18 @@ export function Header() {
                 </div>
               </Link>
             ))}
-            {session?.user?.role === 'admin' && (
+                      {/* PWA Install Button */}
+          <button
+            onClick={triggerPWAInstall}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 border border-emerald-400/40 text-emerald-300 hover:text-white text-xs font-bold transition"
+            title="Install App"
+          >
+            <Download className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Install App</span>
+            <span className="text-[10px] bg-emerald-500/30 px-1 rounded">APK</span>
+          </button>
+
+          {session?.user?.role === 'admin' && (
               <Link
                 href="/dashboard/admin"
                 className="group px-4 py-3 text-sm font-bold rounded-xl hover:bg-yellow-500/10 text-yellow-400 hover:text-yellow-300 transition-all duration-300 transform hover:scale-105"
@@ -265,3 +288,4 @@ export function Header() {
     </header>
   )
 }
+
