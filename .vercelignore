@@ -1,0 +1,8 @@
+# Vercel ignore file
+.env.local
+.env*.local
+node_modules
+.next
+ecosystem.config.js
+scripts/
+build_error.log
