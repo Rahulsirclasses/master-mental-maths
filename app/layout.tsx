@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     statusBarStyle: "default",
     title: "Mental Math",
   },
-  title: "Speed Maths Mastery â€“ Powered by Rahul Sir Classes",
+  title: "Speed Maths Mastery - Powered by Rahul Sir Classes",
   description: "Train students in fast speed calculation, percentage handling, and real-world math agility",
   icons: {
     icon: [
