@@ -18,12 +18,8 @@ export const metadata: Metadata = {
   title: "Speed Maths Mastery - Powered by Rahul Sir Classes",
   description: "Train students in fast speed calculation, percentage handling, and real-world math agility",
   icons: {
-    icon: [
-      { url: "/favicon-logo.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-logo.png", sizes: "16x16", type: "image/png" },
-    ],
-    apple: [{ url: "/favicon-logo.png", sizes: "180x180", type: "image/png" }],
-    shortcut: "/favicon-logo.png",
+    icon: "/favicon.ico",
+    apple: "/icons/apple-touch-icon.png",
   },
   generator: 'v0.app'
 }
@@ -42,10 +38,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-logo.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-logo.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon-logo.png" />
-        <link rel="shortcut icon" href="/favicon-logo.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
       </head>
       <body className={inter.className}>
         <SessionProvider>
@@ -64,4 +57,3 @@ export default function RootLayout({
     </html>
   )
 }
-
