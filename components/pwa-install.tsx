@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Download, X, Smartphone, Share2, PlusSquare } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -20,9 +21,9 @@ interface PWAInstallPromptProps {
 }
 
 export function PWAInstallPrompt({
-  appName = "CAT App",
-  themeGradient = "from-cyan-500 to-purple-600"
-}: PWAInstallPromptProps) {
+  appName = 'Speed Maths',
+  themeGradient = 'from-sky-500 to-purple-600'
+}: PWAInstallPromptProps = {}) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
@@ -31,6 +32,7 @@ export function PWAInstallPrompt({
   const [showIOSModal, setShowIOSModal] = useState(false);
 
   useEffect(() => {
+    // Register service worker
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
       navigator.serviceWorker
         .register('/sw.js')
@@ -42,7 +44,9 @@ export function PWAInstallPrompt({
         });
     }
 
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+    // Check if already in standalone mode (installed)
+    const isStandalone =
+      window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true;
 
     if (isStandalone) {
@@ -50,10 +54,12 @@ export function PWAInstallPrompt({
       return;
     }
 
+    // Detect iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIOS(isIosDevice);
 
+    // Listen for beforeinstallprompt event (Android / Chromium)
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
@@ -67,6 +73,7 @@ export function PWAInstallPrompt({
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstall);
 
+    // Listen for custom trigger from header or menu buttons
     const handleTrigger = () => {
       handleInstallClick();
     };
@@ -90,7 +97,10 @@ export function PWAInstallPrompt({
     } else if (isIOS) {
       setShowIOSModal(true);
     } else {
-      alert('To install this app on your device:\n\n1. In Chrome / Browser: Tap the 3 dots (⋮) menu at top right.\n2. Tap "Install app" or "Add to Home Screen".\n\nIt will install directly on your home screen like an APK!');
+      // Direct instruction for browser
+      alert(
+        'To install this app on your device:\n\n1. In Chrome / Browser: Tap the 3 dots (⋮) menu at top right.\n2. Tap "Install app" or "Add to Home Screen".\n\nIt will install directly on your home screen like an APK!'
+      );
     }
   };
 
@@ -103,17 +113,20 @@ export function PWAInstallPrompt({
 
   return (
     <>
+      {/* Floating Mobile Install Bar / Pill */}
       {showBanner && (
         <div className="fixed bottom-3 left-3 right-3 sm:left-auto sm:right-6 sm:bottom-6 sm:max-w-md z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-slate-700 shadow-2xl backdrop-blur-xl flex items-center justify-between gap-3">
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-sky-500/40 shadow-2xl shadow-sky-500/20 backdrop-blur-xl flex items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${themeGradient} flex items-center justify-center text-white shrink-0 shadow-lg`}>
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-sky-500 to-purple-600 flex items-center justify-center text-white shrink-0 shadow-lg shadow-sky-500/20">
                 <Smartphone className="h-5 w-5" />
               </div>
               <div className="truncate">
                 <p className="text-xs font-bold text-white flex items-center gap-1.5">
                   <span>Install {appName}</span>
-                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1 rounded font-medium">Free PWA / APK</span>
+                  <span className="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-1 rounded font-medium">
+                    Free PWA / APK
+                  </span>
                 </p>
                 <p className="text-[11px] text-slate-300 truncate">
                   Fast offline access &amp; instant home screen icon
@@ -122,13 +135,14 @@ export function PWAInstallPrompt({
             </div>
 
             <div className="flex items-center gap-1.5 shrink-0">
-              <button
+              <Button
                 onClick={handleInstallClick}
-                className={`bg-gradient-to-r ${themeGradient} hover:opacity-90 text-white font-bold text-xs px-3 py-1.5 h-8 rounded-lg shadow-md flex items-center transition`}
+                size="sm"
+                className="bg-gradient-to-r from-sky-500 to-purple-600 hover:from-sky-400 hover:to-purple-500 text-white font-bold text-xs px-3 py-1.5 h-8 rounded-lg shadow-md shadow-sky-500/20"
               >
                 <Download className="h-3.5 w-3.5 mr-1" />
                 Install
-              </button>
+              </Button>
               <button
                 onClick={dismissBanner}
                 className="text-slate-400 hover:text-white p-1 rounded-md transition"
@@ -141,12 +155,13 @@ export function PWAInstallPrompt({
         </div>
       )}
 
+      {/* iOS Instructions Modal */}
       {showIOSModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-6 max-w-sm w-full space-y-4 shadow-2xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className={`h-8 w-8 rounded-lg bg-gradient-to-br ${themeGradient} flex items-center justify-center text-white`}>
+                <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-sky-500 to-purple-600 flex items-center justify-center text-white">
                   <Smartphone className="h-4 w-4" />
                 </div>
                 <h3 className="font-bold text-white text-base">Install on iPhone / iPad</h3>
@@ -165,25 +180,29 @@ export function PWAInstallPrompt({
 
             <div className="space-y-3 text-xs bg-slate-800/80 p-3.5 rounded-2xl border border-slate-700">
               <div className="flex items-start gap-2.5">
-                <div className="h-6 w-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 font-bold">1</div>
+                <div className="h-6 w-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 font-bold">
+                  1
+                </div>
                 <p className="text-slate-200">
                   Tap the <Share2 className="h-4 w-4 inline text-cyan-400 mx-1" /> <strong>Share</strong> button at the bottom of Safari.
                 </p>
               </div>
               <div className="flex items-start gap-2.5">
-                <div className="h-6 w-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 font-bold">2</div>
+                <div className="h-6 w-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 font-bold">
+                  2
+                </div>
                 <p className="text-slate-200">
                   Scroll down and tap <PlusSquare className="h-4 w-4 inline text-purple-400 mx-1" /> <strong>Add to Home Screen</strong>.
                 </p>
               </div>
             </div>
 
-            <button
+            <Button
               onClick={() => setShowIOSModal(false)}
-              className={`w-full bg-gradient-to-r ${themeGradient} text-white font-semibold rounded-xl text-xs py-2`}
+              className="w-full bg-gradient-to-r from-sky-500 to-purple-600 text-white font-semibold rounded-xl text-xs py-2"
             >
               Got it!
-            </button>
+            </Button>
           </div>
         </div>
       )}
